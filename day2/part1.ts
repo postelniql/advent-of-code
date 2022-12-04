@@ -1,24 +1,10 @@
 interface GameMoves {
   theyPlayed: string;
-  outcome: string;
+  iPlayed: string;
 }
 
-const getRoundScore = (moveOutcome: string): number => {
-  switch (moveOutcome) {
-    case "X":
-      return 0;
-    case "Y":
-      return 3;
-    case "Z":
-      return 6;
-
-    default:
-      return 0;
-  }
-};
-
-const getMoveScore = (move: string): number => {
-  switch (move) {
+const getScoreOf = (playerMove: string): number => {
+  switch (playerMove) {
     case "X":
       return 1;
     case "Y":
@@ -31,7 +17,7 @@ const getMoveScore = (move: string): number => {
   }
 };
 
-const getScoreOfMyMove = (move: GameMoves): number => {
+const getRoundScore = (move: GameMoves): number => {
   const winsTo = {
     A: "Y",
     B: "Z",
@@ -44,46 +30,27 @@ const getScoreOfMyMove = (move: GameMoves): number => {
     C: "Y",
   };
 
-  const drawsTo = {
-    A: "X",
-    B: "Y",
-    C: "Z",
-  };
+  // TODO: replace this horrible logic with type magic
+  switch (move.theyPlayed) {
+    case "A":
+      if (move.iPlayed === losesTo.A) {
+        return 0;
+      } else if (move.iPlayed === winsTo.A) {
+        return 6;
+      } else return 3;
+    case "B":
+      if (move.iPlayed === losesTo.B) {
+        return 0;
+      } else if (move.iPlayed === winsTo.B) {
+        return 6;
+      } else return 3;
+    case "C":
+      if (move.iPlayed === losesTo.C) {
+        return 0;
+      } else if (move.iPlayed === winsTo.C) {
+        return 6;
+      } else return 3;
 
-  switch (move.outcome) {
-    case "X":
-      switch (move.theyPlayed) {
-        case "A":
-          return getMoveScore(losesTo.A);
-        case "B":
-          return getMoveScore(losesTo.B);
-        case "C":
-          return getMoveScore(losesTo.C);
-        default:
-          return 0;
-      }
-    case "Y":
-      switch (move.theyPlayed) {
-        case "A":
-          return getMoveScore(drawsTo.A);
-        case "B":
-          return getMoveScore(drawsTo.B);
-        case "C":
-          return getMoveScore(drawsTo.C);
-        default:
-          return 0;
-      }
-    case "Z":
-      switch (move.theyPlayed) {
-        case "A":
-          return getMoveScore(winsTo.A);
-        case "B":
-          return getMoveScore(winsTo.B);
-        case "C":
-          return getMoveScore(winsTo.C);
-        default:
-          return 0;
-      }
     default:
       return 0;
   }
@@ -96,9 +63,9 @@ const calculateGameScore = (input: string) =>
       const temp = tuple.split(" ");
       const move: GameMoves = {
         theyPlayed: temp[0],
-        outcome: temp[1],
+        iPlayed: temp[1],
       };
-      return getRoundScore(move.outcome) + getScoreOfMyMove(move);
+      return getScoreOf(move.iPlayed) + getRoundScore(move);
     })
     .reduce((a, b) => {
       return a + b;

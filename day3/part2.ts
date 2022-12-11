@@ -4,9 +4,7 @@ const elvesTriplets = arr
   .map((_, index) => {
     return index % 3 === 0 ? arr.slice(index, index + 3) : null;
   })
-  .filter((triplet) => {
-    return triplet;
-  });
+  .filter((triplet) => triplet);
 
 const totalPriorities = 0;
 

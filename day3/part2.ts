@@ -8,8 +8,6 @@ const elvesTriplets = arr
     return triplet;
   });
 
-console.log("elves triplets are: ", elvesTriplets);
-
 const totalPriorities = 0;
 
 const calculatePriority = (itemType: string): number => {

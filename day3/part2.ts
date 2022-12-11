@@ -29,7 +29,6 @@ const findBadge = (first: string, second: string, third: string): string => {
 
 const priorities = elvesTriplets
   .map((triplet) => {
-    console.log("triplet is: ", triplet);
     const [firstElf, secondElf, thirdElf] = triplet;
 
     const badgeType = findBadge(firstElf, secondElf, thirdElf);
